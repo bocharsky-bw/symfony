@@ -44,6 +44,8 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
 
         $this->data = $this->computeCount($messages);
         $this->data['messages'] = $messages;
+        $this->data['locale'] = $this->translator->getLocale();
+        $this->data['fallback_locales'] = $this->translator->getFallbackLocales();
 
         $this->data = $this->cloneVar($this->data);
     }
@@ -85,6 +87,22 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
     public function getCountDefines()
     {
         return isset($this->data[DataCollectorTranslator::MESSAGE_DEFINED]) ? $this->data[DataCollectorTranslator::MESSAGE_DEFINED] : 0;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->data['locale'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFallbackLocales()
+    {
+        return $this->data['fallback_locales'];
     }
 
     /**
