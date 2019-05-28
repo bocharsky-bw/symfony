@@ -37,7 +37,15 @@ class MailgunTransport extends AbstractTransport
     {
         $this->key = $key;
         $this->domain = $domain;
-        $this->client = $client ?? HttpClient::create();
+
+        $this->client = $client;
+        if (null === $client) {
+            if (!class_exists(HttpClient::class)) {
+                throw new \LogicException(sprintf('You cannot use "%s" as the HttpClient component is not installed. Try running "composer require symfony/http-client".', __CLASS__));
+            }
+
+            $this->client = HttpClient::create();
+        }
 
         parent::__construct($dispatcher, $logger);
     }
